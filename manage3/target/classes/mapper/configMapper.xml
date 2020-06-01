@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.domain.manage.dao.ConfigDAO">
+	<select id="selectCount" resultType="int">
+		select count(*) from config
+	</select>
+	<select id="selectMaxIdx" resultType="int">
+		select max(idx) from config
+	</select>
+	<!-- table 중복 확인을 위한 가져오기 -->
+	<select id="selectByName" resultType="string" parameterType="string">
+		select tableName from config where tableName = #{tableName}
+	</select>
+	<!-- 게시글 관리페이지의 게시판 추가 -->
+	<select id="insertConfig" parameterType="configVO">
+		insert into config values(
+			config_idx_seq.nextval, #{tableName}, #{subject}, #{admin}, sysdate,
+			#{list_level}, #{read_level}, #{writer_level}, #{comment_level},
+			#{use_secret},#{newIcon},#{hotIcon},#{gallery_cols}
+		)
+	</select>
+	
+	<!-- 게시글 관리 테이블의 모든 게시판 가져오기 -->
+	<select id="selectList" resultType="configVO" parameterType="hashmap">
+		<![CDATA[
+			select
+				Q.*
+			from
+				(select 
+					rownum rnum, R.*
+				from
+					(select * from config order by idx desc) R		
+				where
+					rownum<= #{endNo}) Q
+			where
+				rnum>=#{startNo}
+			]]>
+	</select>
+	<!-- 게시판 하나 가져오기 -->
+	<select id="selectByIdx" resultType="configVO" parameterType="int">
+		select * from config where idx = #{idx}
+	</select>
+	<!-- 게시판 수정하기 -->
+	<update id="update" parameterType="configVO">
+		update config set subject=#{subject}, admin=#{admin},
+			list_level=#{list_level}, read_level=#{read_level}, writer_level=#{writer_level}, 
+			comment_level=#{comment_level},use_secret=#{use_secret},newIcon=#{newIcon},hotIcon=#{hotIcon},
+			gallery_cols=#{gallery_cols}
+		where idx = #{idx}
+	</update>
+	<!-- 게시판 하나 삭제하기 -->
+	<delete id="delete" parameterType="int">
+		delete from config where idx = #{idx}
+	</delete>
+</mapper>

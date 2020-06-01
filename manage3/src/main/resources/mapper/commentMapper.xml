@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.domain.manage.dao.CommentDAO">
+	<!-- 0. 해당 글번호의 개수 구하기 -->
+	<select id="selectCount" parameterType="int" resultType="int">
+		select count(*) from comments where ref=#{ref}
+	</select>
+	<!-- 1. 해당 글번호의 댓글목록 구하기 -->
+	<select id="selectList" parameterType="int" resultType="CommentsVO">
+		select * from comments where ref=#{ref}
+	</select>
+	<!-- 2. 해당 글번호 가져오기 -->
+	<select id="selectByIdx" parameterType="int" resultType="CommentsVO">
+		select * from comments where idx=#{idx}
+	</select>
+	<!-- 저장 -->
+	<insert id="insert" parameterType="CommentsVO">
+		insert into comments values (comments_idx_seq.nextval,#{ref},#{mb_id},#{mb_nick},sysdate,#{content},'')
+	</insert>
+	<!-- 수정 -->
+	<update id="update" parameterType="CommentsVO">
+		update comments set content=#{content}, updateDate=SYSDATE where idx=#{idx}
+	</update>
+	<!-- 삭제 -->
+	<delete id="delete" parameterType="int">
+		delete from comments where idx=#{idx}
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+

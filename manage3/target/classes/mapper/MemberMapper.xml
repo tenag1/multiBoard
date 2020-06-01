@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.domain.manage.dao.MemberDAO">
+	<!-- 멤버 총 몇 명 -->
+	<select id="selectCount" resultType="int">
+		select count(*) from member
+	</select>
+	<!-- 멤버 id 중복 확인을 위한 가져오기 -->
+	<select id="selectByIdx_Id" resultType="string" parameterType="int">
+		select id from member where idx=#{idx}
+	</select>
+	<!-- 멤버 email 중복 확인 + id 찾기를 위한 email로 id와 생일 가져오기 -->
+	<select id="selectByEmail" resultType="memberVO" parameterType="string">
+		select id, birth from member where email = #{email}
+	</select>
+	<!-- 멤버 하나 가져오기 -->
+	<select id="selectByIdx" resultType="memberVO" parameterType="int">
+		select * from member where idx = #{idx}
+	</select>
+	<!-- 아이디로 멤버 하나 가져오기 -->
+	<select id="selectById" resultType="memberVO" parameterType="string">
+		select * from member where id = #{id}
+	</select>
+	<!-- 멤버 모두 가져오기 -->
+	<select id="selectList" resultType="memberVO" parameterType="hashmap">
+		<![CDATA[
+			select
+				Q.*
+			from
+				(select 
+					rownum rnum, R.*
+				from
+					(select * from member order by idx desc) R		
+				where
+					rownum<= #{endNo}) Q
+			where
+				rnum>=#{startNo}
+		]]>
+	</select>
+	<!-- 멤버 추가 -->
+	<insert id="insert" parameterType="memberVO">
+		insert into member values (
+			 member_idx_SEQ.nextval, #{id}, #{password}, #{name}, #{nick}, #{email}, #{sex},
+			 #{birth}, #{hp}, #{certify}, #{zipCode}, #{addr}, #{addr2}, sysdate,
+			 #{mailing}, #{sms}, null, 1
+		)
+	</insert>
+	
+	<!-- 멤버 수정 -->
+	<update id="update" parameterType="memberVO">
+		update member set password = #{password}, name = #{name}, nick = #{nick},
+		email = #{email}, sex = #{sex}, birth = #{birth}, hp = #{hp}, zipCode = #{zipCode},
+		addr = #{addr}, addr2 = #{addr2}, mailing = #{mailing}, sms = #{sms} 
+		where idx = #{idx}
+	</update>
+	
+	<!-- 비밀번호만 수정 -->
+	<update id="updatePwd" parameterType="memberVO">
+	update member set password = #{password} WHERE id = #{id}
+	</update>
+	
+	<!-- 멤버 인증 수정 -->
+	<update id="updateCertify" parameterType="int">
+		update member set certify = 'Y' where idx = #{idx}
+	</update>
+	
+	<!-- 탈퇴 설정(7일 후 삭제) -->
+	<update id="updateLeaveDate" parameterType="int">
+		update member set leaveDate = sysdate where idx = #{idx}
+	</update>
+	
+	<!-- 멤버 삭제 7일 이후 -->
+	<delete id="delete">
+		<![CDATA[
+			DELETE FROM
+				(SELECT 
+					TO_DATE(TO_CHAR(sysdate, 'YYYY-MM-dd'))-TO_DATE(TO_CHAR(leaveDate, 'YYYY-MM-dd')) leave
+				FROM 
+					(SELECT * FROM MEMBER WHERE LEAVEDATE IS NOT NULL)
+				)
+			WHERE leave >= 7
+		]]>
+	</delete>
+	
+	<!-- 멤버 탈퇴 취소 -->
+	<update id="updateNoLeave" parameterType="int">
+		update member set leaveDate = null where idx = #{idx}
+	</update>
+	
+	<!-- 멤버 권한 테이블 -->
+	<!-- 멤버 id로 권한 제외해서 가져오기 -->
+	<insert id="insertRole" parameterType="memberRoleVO">
+		insert into member_role values (member_role_idx_seq.nextval, #{mb_idx}, #{role})
+	</insert>
+	<!-- 제일 높은 권한 가져오기(먼저 추가된 순서) -->
+	<select id="selectRoleByIdx" resultType="memberRoleVO" parameterType="int">		
+		SELECT ROLE.* FROM MEMBER_ROLE ROLE ,MEMBER member
+		WHERE MEMBER.IDX = ROLE.MB_IDX AND MEMBER.idx = #{mb_idx} AND rownum=1
+	</select>
+	<!-- 멤버 권한 중복없이 가져오기 -->
+	<select id="selectRoles" resultType="string">
+		SELECT DISTINCT ROLE FROM member_role
+	</select>
+</mapper>

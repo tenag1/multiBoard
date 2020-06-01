@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.domain.manage.dao.BoardDAO">
+	<!-- 전체 개수 가져오기 -->
+	<select id="selectCount" resultType="int">
+		select count(*) from board
+	</select>
+	<!-- cf_idx의 전체 개수 가져오기 -->
+	<select id="selectCountByCf_idx" resultType="int" parameterType="int">
+		select count(*) from board where cf_idx = #{cf_idx}
+	</select>
+	<!-- 1개 가져오기 -->
+	<select id="selectByIdx" resultType="boardVO" parameterType="int">
+		select * from board where idx = #{idx}
+	</select>
+	<!-- 같은 id의 마지막 글 idx 가져오기(저장시) -->
+	<select id="selectByWriter" resultType="int" parameterType="string">
+		SELECT max(idx) FROM board WHERE writer = #{writer}
+	</select>
+	<!-- 리스트 가져오기 -->
+	<select id="selectList" resultType="boardVO" parameterType="hashmap">
+		<![CDATA[
+			select
+				Q.*
+			from
+				(select 
+					rownum rnum, R.*
+				from
+					(select * from board where cf_idx=#{cf_idx} order by idx desc) R		
+				where
+					rownum<= #{endNo}) Q
+			where
+				rnum>=#{startNo}
+			]]>
+	</select>
+	<!-- 작성하기 updateDate null로 넣어도 되나-->
+	<insert id="insert" parameterType="boardVO">
+		insert into board values(
+			board_idx_seq.nextval, #{cf_idx}, #{subject},#{content}, #{writer},#{writer_nick}, #{password}, sysdate, null, 0
+		)
+	</insert>
+	<!-- 수정하기 -->
+	<update id="update" parameterType="boardVO">
+		update board set cf_idx = #{cf_idx}, subject = #{subject}, content = #{content}, password = #{password}, updateDate = sysdate where idx = #{idx}
+	</update>
+	<!-- 삭제하기 -->
+	<delete id="deleteByIdx" parameterType="int">
+		delete from board where idx = #{idx}
+	</delete>
+	<update id="updateHit" parameterType="int">
+		update board set hit = hit+1 where idx = #{idx}
+	</update>
+	<!-- 인덱스 에서 사용할 새 글 5개 -->
+	<select id="selectNew" resultType="boardVO" parameterType="int">
+		<![CDATA[
+			SELECT *
+			FROM (SELECT * FROM board WHERE cf_idx = ${cf_idx} ORDER BY CREATEDATE DESC)
+			WHERE rownum <=5
+		]]>
+	</select>
+</mapper>
