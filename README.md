@@ -71,3 +71,4 @@ manage3/src/main/webapp/WEB-INF/config_sql.sql의 테이블과 시퀀스를 생�
  __name__ :윤혜진  
  __h.p.__ 　:010-2340-6919  
  __email__ :nellayur@gmail.com  
+
