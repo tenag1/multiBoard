@@ -46,6 +46,5 @@ public class ConfigVO implements Serializable{
 	private int newIcon;      // 0 일 경우 사용x
 	@NotNull
 	private int hotIcon;      // 0 일 경우 사용x
-	@NotNull
-	private int gallery_cols; // 0일 경우 사용x
+	private int mainSelect;
 }

@@ -18,7 +18,7 @@
 		insert into config values(
 			config_idx_seq.nextval, #{tableName}, #{subject}, #{admin}, sysdate,
 			#{list_level}, #{read_level}, #{writer_level}, #{comment_level},
-			#{use_secret},#{newIcon},#{hotIcon},#{gallery_cols}
+			#{use_secret},#{newIcon},#{hotIcon}
 		)
 	</select>
 	
@@ -46,12 +46,19 @@
 	<update id="update" parameterType="configVO">
 		update config set subject=#{subject}, admin=#{admin},
 			list_level=#{list_level}, read_level=#{read_level}, writer_level=#{writer_level}, 
-			comment_level=#{comment_level},use_secret=#{use_secret},newIcon=#{newIcon},hotIcon=#{hotIcon},
-			gallery_cols=#{gallery_cols}
+			comment_level=#{comment_level},use_secret=#{use_secret},newIcon=#{newIcon},hotIcon=#{hotIcon}
 		where idx = #{idx}
 	</update>
 	<!-- 게시판 하나 삭제하기 -->
 	<delete id="delete" parameterType="int">
 		delete from config where idx = #{idx}
 	</delete>
+	
+	<!-- 메인 페이지에 넣을 설정 게시판 -->
+	<select id="selectMain" resultType="int">
+		SELECT idx FROM config WHERE mainSelect = 1
+	</select>
+	<update id="updateMainSelect" parameterType="hashMap">
+		update config set mainSelect = #{mainSelect} where idx = #{idx}
+	</update>
 </mapper>

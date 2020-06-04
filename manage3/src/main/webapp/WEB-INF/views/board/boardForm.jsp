@@ -19,6 +19,7 @@
 	tr{
 		margin: 5px;
 	}
+	.note-toolbar{background: white;}
 </style>
 <script>
 	$(function(){

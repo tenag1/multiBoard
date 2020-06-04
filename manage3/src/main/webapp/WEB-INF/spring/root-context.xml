@@ -21,9 +21,6 @@
 	<bean id="address" class="java.lang.String">
 		<constructor-arg value="${email.address}"/>
 	</bean>
-	<bean id="emailPwd" class="java.lang.String">
-		<constructor-arg value="${email.pwd}"/>
-	</bean>
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="${o.driver}"/>
 		<property name="url" value="${o.url}"/>

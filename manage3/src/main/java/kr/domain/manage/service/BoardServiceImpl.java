@@ -166,6 +166,7 @@ public class BoardServiceImpl implements BoardService {
 				//경로의 파일 삭제
 				List<FilesVO> list = filesDAO.selectList(idx);
 				for(FilesVO fvo : list) {
+					logger.info("fileName: "+fvo.getSaveName());
 					File file = new File(path + fvo.getSaveName());
 					file.delete();
 				}

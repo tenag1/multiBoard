@@ -152,7 +152,7 @@
 					</tr>
 					<tr>
 						<td><label for="use_secret">비밀 글 사용 여부: </label></td>
-						<td>
+						<td style="text-align: left;">
 							<form:radiobutton path="use_secret" value="Y" checked='checked'/>사용 | 
 							<form:radiobutton path="use_secret" value="N"/>미사용
 							<form:errors path="use_secret" class=" has-error"/>
@@ -175,13 +175,6 @@
 						<td>
 							<form:input type="text" path="hotIcon" id="hotIcon" name="hotIcon" class="form-control"/>
 							<form:errors path="hotIcon" class=" has-error"/>
-						</td>
-					</tr>
-					<tr>
-						<td><label for="gallery_cols">갤러리 열 수: </label></td>
-						<td>
-							<form:input type="text" path="gallery_cols" id="gallery_cols" name="gallery_cols" class="form-control"/>
-							<form:errors path="gallery_cols" class=" has-error"/>
 						</td>
 					</tr>
 					<tr>

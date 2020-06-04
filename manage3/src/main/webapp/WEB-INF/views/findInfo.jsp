@@ -127,10 +127,6 @@ $(function(){
 						</tr>
 					</tbody>
 				</table>
-				<form>
-		              
-		               
-		        </form>
 			</div>
 			<hr />
 			<div class="findDiv">

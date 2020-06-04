@@ -106,7 +106,6 @@ public class BoardController {
 		model.addAttribute("newIcon", configVO.getNewIcon());
 		model.addAttribute("newIconDate", newIconDate(configVO.getNewIcon()));
 		model.addAttribute("hotIcon", configVO.getHotIcon());
-		model.addAttribute("gallery_cols", configVO.getGallery_cols());
 
 		logger.info("boardList- " + configVO);
 		logger.info("boardList- " + pagingVO);

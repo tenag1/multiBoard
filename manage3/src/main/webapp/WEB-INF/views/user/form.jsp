@@ -20,12 +20,13 @@
 	.table td, .table th{
 		padding: 0.5rem;
 	}
-	tr>td:nth-of-type(1){width: 15%;}
-	tr>td:nth-of-type(2){width: 35%;}
-	tr>td:nth-of-type(3){width: 50%; text-align: left;}
+	.table>tr>td:nth-of-type(1){width: 15%;}
+	.table>tr>td:nth-of-type(2){width: 35%;}
+	.table>tr>td:nth-of-type(3){width: 50%; text-align: left;}
 	.notInput{
 		text-align: left;
 	}
+	
 	/*datepicker*/
 	.datepicker{
 		display: block;
@@ -111,7 +112,7 @@
 		      }
 		});
 		
-		$("#id").change(function(){
+		$("#id").keyup(function(){
 			var id = $("#id").val();
 			//id의 길이가 4이상, idx가 0 이하(신규가입) 일 때
 			if(id.length>3 && idx<=0){
@@ -134,7 +135,7 @@
 				});
 			}
 		});
-		$("#email").change(function(){
+		$("#email").keyup(function(){
 			var email = $("#email").val();
 			//email의 길이가 4이상, idx가 0 이하(신규가입) 일 때
 			if(email.length>3 && idx <= 0){

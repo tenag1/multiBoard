@@ -115,7 +115,5 @@
 	<div class='mainBody'>
 		<sitemesh:write property='body' />
 	</div>
-    <script src="${pageContext.request.contextPath }/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-	
 </body>
 </html>

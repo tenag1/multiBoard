@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.domain.manage.dao.BannerDAO">
+	<select id="selectCount" resultType="int">
+		select count(*) from banner
+	</select>
+	<select id="selectByIdx" resultType="BannerVO" parameterType="int">
+		select * from banner where idx = #{idx}
+	</select>
+	<insert id="insert" parameterType="bannerVO">
+		insert into banner values (
+			banner_idx_seq.nextval, #{startDate}, #{endDate}, sysdate, #{title}, #{url}, #{image}
+		)
+	</insert>
+	<update id="update" parameterType="bannerVO">
+		update banner set startDate = #{startDate}, endDate = #{endDate}, uploadDate = sysdate,
+		title = #{title}, url = #{url}, image = #{image} where idx = #{idx}
+	</update>
+	<delete id="delete" parameterType="int">
+		delete from banner where idx = #{idx}
+	</delete>
+	<select id="selectList" resultType="bannerVO" parameterType="hashMap">
+		<![CDATA[
+			select
+				Q.*
+			from
+				(select
+					rownum rnum, R.*
+				from
+					(select * from banner order by idx desc) R
+				where rownum <= #{endNo}) Q
+			where
+				rnum >= #{startNo}
+		]]>
+	</select>
+</mapper>

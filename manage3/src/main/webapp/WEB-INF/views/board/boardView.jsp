@@ -35,8 +35,9 @@
 		    }
 		});
 	});
-	var password = ${boardVO.password}+"";
-	if(password != null  && password != ""){
+	var password = "${boardVO.password}";
+	var writer = "${boardVO.writer}";
+	if(password != "" && (writer != "${vo.id}" || writer != "admin")){
 		var pwdChk = prompt("게시글 비밀번호를 입력해주세요.");
 		if(pwdChk != password){
 			history.back();

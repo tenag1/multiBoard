@@ -32,27 +32,29 @@
 	$(function() {
 
 	});
-	// 제목을 누르면 가져갈 no를 위한 idx
-	var idx = -1;
-	
 	function deleteBtn(idx) {
-		$("#deleteCheck").css("display", "block").css("z-index",100);
-		this.idx = idx;
+		var result = confirm("정말로 삭제하시겠습니까?");
+		if(result){
+			var contextPath = '${pageContext.request.contextPath}/admin/configDelete';
+			post_to_url(contextPath, {'idx' : idx});
+		}
 	}
-	function cancleBtn() {
-		$("#deleteCheck").css("display", "none");
-		this.idx = -1;
-	}
-	
-	// 제목을 누르면 가져갈 no를 위한 idx
-	function realDelete() {
-		//url
-		var hostIndex = location.href.indexOf(location.host)+ location.host.length;
-		var contextPath = location.href.substring(hostIndex, location.href.indexOf('/', hostIndex + 1));
-		contextPath += '/admin/configDelete';
-		post_to_url(contextPath, {
-			'idx' : idx,
-			'${_csrf.parameterName}':'${_csrf.token}'
+	function updateSelect(idx, mainSelect){
+		$.ajax({
+			url: '${pageContext.request.contextPath}/admin/updateSelect?idx='+idx+'&mainSelect='+mainSelect,
+			type: 'POST',
+			success: function(data){
+				var img = $("#imgPlace"+idx);
+				if(data == 1){
+					img.attr("src", "${pageContext.request.contextPath }/resources/image/check.png");
+					img.attr("alt", "Check");
+					img.attr("onclick", "updateSelect("+idx+", 0 )");
+				}else{
+					img.attr("src", "${pageContext.request.contextPath }/resources/image/checkbox.png");
+					img.attr("alt", "nonCheck");
+					img.attr("onclick", "updateSelect("+idx+", 1 )");
+				}
+			}
 		});
 	}
 </script>
@@ -60,6 +62,8 @@
 <body>
 	<button class="btn btn-outline-dark" style="text-align: right; margin-top: 20px;"
 		onclick="location.href='${pageContext.request.contextPath}/admin/configForm'">게시판 추가</button>
+	<!-- <button class="btn btn-outline-dark" style="text-align: right; margin-top: 20px;"
+		onclick="location.href='${pageContext.request.contextPath}/admin/bannerList'">배너 관리</button> -->
 	<div class="table-responsive">
 		<table class="table">
 			<p class="anno">${ pagingVO.pageInfo}</p>
@@ -90,6 +94,14 @@
 									onclick="location.href='${pageContext.request.contextPath}/admin/configForm?no=${vo.idx }'">E</button>
 								<button type="button" onclick="deleteBtn(${vo.idx})"
 									class="btn btn-outline-dark">D</button>
+								<c:if test="${vo.mainSelect eq 1 }">
+									<img id="imgPlace${vo.idx }" src="${pageContext.request.contextPath }/resources/image/check.png" alt="Check" width=30px;
+										onclick="updateSelect(${vo.idx}, 0 )"/>
+								</c:if>
+								<c:if test="${vo.mainSelect eq 0 }">
+									<img id="imgPlace${vo.idx }" src="${pageContext.request.contextPath }/resources/image/checkbox.png" alt="nonCheck" width=30px;
+										onclick="updateSelect(${vo.idx}, 1)"/>
+								</c:if>
 							</td>
 						</tr>
 					</c:forEach>
@@ -101,16 +113,6 @@
 				</c:if>
 				</tbody>
 			</table>
-	
-	<div id="deleteCheck">
-		<h3>정말로 삭제하시겠습니까?</h3>
-		<p>
-			<button type="button" class="btn btn-outline-success"
-				onclick="cancleBtn()">취소</button>
-		<button type="button" class="btn btn-outline-dark"
-			onclick="realDelete()">삭제</button>
-			</p>
 		</div>
-	</div>
 </body>
 </html>

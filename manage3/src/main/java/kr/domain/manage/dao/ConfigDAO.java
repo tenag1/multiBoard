@@ -14,4 +14,6 @@ public interface ConfigDAO {
 	public ConfigVO selectByIdx(int idx);
 	public void update(ConfigVO configVO);
 	public void delete(int idx);
+	public List<Integer> selectMain();
+	public void updateMainSelect(HashMap<String, Integer> map);
 }

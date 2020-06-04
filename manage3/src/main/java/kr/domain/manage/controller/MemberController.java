@@ -85,8 +85,8 @@ public class MemberController {
 
 	// 회원가입 처리
 	@RequestMapping(value = "/user/formOk", method = RequestMethod.POST)
-	public String UserFormOk(@Valid @ModelAttribute MemberVO memberVO, BindingResult result, HttpServletRequest request,
-			Model model) {
+	public String UserFormOk(@Valid @ModelAttribute MemberVO memberVO, BindingResult result
+			, HttpServletRequest request, Model model) {
 
 		if (result.hasErrors()) {
 			return "user/form";
@@ -135,8 +135,8 @@ public class MemberController {
 
 	// 유저 탈퇴
 	@RequestMapping(value = "/user/leave")
-	public String leave(@RequestParam("idx") int userIdx, HttpServletRequest request) {
-
+	public String leave(@RequestParam("idx") int userIdx,
+			HttpServletRequest request) {
 		memberService.updateLeaveDate(userIdx);
 		logger.info("leave - idx: " + userIdx);
 		request.getSession().removeAttribute("vo");

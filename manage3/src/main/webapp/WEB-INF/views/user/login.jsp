@@ -21,7 +21,6 @@ function loginChk(){
 		url:'${pageContext.request.contextPath}/user/loginCheck?id='+id+'&password='+pwd,
 		success: function(data){
 			if(data == false){
-				alert(data);
 				alert("회원 정보를 확인해주세요.");
 				return false;
 			}

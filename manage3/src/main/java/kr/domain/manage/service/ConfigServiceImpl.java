@@ -2,6 +2,7 @@ package kr.domain.manage.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,8 @@ public class ConfigServiceImpl implements ConfigService {
 	private ConfigDAO configDAO;
 	@Autowired
 	private CategoryService categoryService;
+	@Autowired
+	private BoardService boardService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(ConfigController.class);
 	
@@ -107,5 +110,26 @@ public class ConfigServiceImpl implements ConfigService {
 	public int selectCount() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void updateMainSelect(int idx, int mainSelect) {
+		// mainSelect가 0이면 메인 표기x 1이면 메인 표기 o
+		HashMap<String , Integer> map = new HashMap<String, Integer>();
+		map.put("idx", idx);
+		map.put("mainSelect", mainSelect);
+		configDAO.updateMainSelect(map);
+	}
+
+	@Override
+	public Map<String, List<BoardVO>> selectMain() {
+		Map<String, List<BoardVO>> map = new HashMap<String, List<BoardVO>>();
+		// list 내용: 체크한 config의 idx들
+		List<Integer> list = configDAO.selectMain();
+		for(int i = 0; i< list.size(); i++) {
+			//idx로 게시판 이름을 가져와 넣고 각 게시판의 최근 5개의 글을 넣기
+			map.put(selectByIdx(list.get(i)).getSubject()+"@#"+list.get(i), boardService.selectNew(list.get(i)));
+		}
+		return map;
 	}
 }
