@@ -55,6 +55,8 @@ manage3/src/main/webapp/WEB-INF/config_sql.sql의 테이블과 시퀀스를 생�
       정보가 일치한다면 id 찾기의 경우 alert로 바로 알리고 
       pwd는 임시 비밀번호를 만들어 db의 비밀번호를 업데이트하고 메일을 보냅니다.
 ##### 게시판 관리
+<img width="300" alt="configMainpng" src="https://user-images.githubusercontent.com/59866253/83736121-2d11e080-a68c-11ea-88e2-c12b446469a6.png">
+
       게시판을 추가할 때 카테고리 지정을 할 수 있고 목록 읽기, 글 읽기, 쓰기, 댓글 작성, 비밀 글 사용 여부, 
       새 글/추천 글에 제한을 줄 수 있습니다.
       회원관리 페이지에서 모든 회원의 정보를 볼 수 있습니다.
@@ -62,6 +64,8 @@ manage3/src/main/webapp/WEB-INF/config_sql.sql의 테이블과 시퀀스를 생�
       게시글 객체인 boardVO에 commentList와 fileList를 주입해서 사용했습니다.
 
 ##### 메인 페이지
+<img width="300" alt="index" src="https://user-images.githubusercontent.com/59866253/83735855-d7d5cf00-a68b-11ea-9400-e11059edbbc8.png">
+
 	admin으로 접속 후 관리 페이지에서 main에서 보기를 check/nonCheck 할 수 있습니다.
 	check된 게시판은 index에서 최대 5개의 글이 보여지게 됩니다.
 	
